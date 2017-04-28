@@ -56,6 +56,42 @@ class App extends Component {
         email: p.email,
         image: p.picture
       }).then(res => {
+
+        axios.get('/api/users')
+        .then(res => {
+          const users = res.data;
+          let userId = null;
+          let p = this.state.profile;
+
+          users.forEach(function(user) {
+            if (user.email === p.email) {
+              userId = user.id;
+            }
+          })
+          this.setState({
+            userId: userId
+          });
+          console.log('User Id: ', this.state.userId)
+
+          // get a user's event ids
+          axios.get('/api/userevents/' + this.state.userId)
+          .then(res => {
+            let eventIds = [];
+            let eventData = res.data;
+
+            eventData.forEach(function(event) {
+              eventIds.push(event.id);
+            })
+            this.setState({
+              userEventIds: eventIds
+            })
+            // this.state.events = eventIds;
+            this.setUserEvents();
+            console.log('Event state: ', this.state.userEventIds);
+          }).catch(err => {
+              console.log(err);
+            })
+        })
         console.log('User added to the database')
       }).catch(err => {
         console.log(err);
@@ -101,42 +137,6 @@ class App extends Component {
         events: events,
         displayedEvents: events
       });
-    })
-
-    axios.get('/api/users')
-    .then(res => {
-      const users = res.data;
-      let userId = null;
-      let p = this.state.profile;
-
-      users.forEach(function(user) {
-        if (user.email === p.email) {
-          userId = user.id;
-        }
-      })
-      this.setState({
-        userId: userId
-      });
-
-      console.log('User Id: ', this.state.userId)
-      // get a user's event ids
-      axios.get('/api/userevents/' + this.state.userId)
-      .then(res => {
-        let eventIds = [];
-        let eventData = res.data;
-
-        eventData.forEach(function(event) {
-          eventIds.push(event.id);
-        })
-        this.setState({
-          userEventIds: eventIds
-        })
-        // this.state.events = eventIds;
-        this.setUserEvents();
-        console.log('Event state: ', this.state.userEventIds);
-      }).catch(err => {
-        console.log(err);
-      })
     })
   }
 
