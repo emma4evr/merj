@@ -3,9 +3,10 @@ require('dotenv').config();
 
 var Sequelize = require('sequelize');
 
+// New AWS RDS Instance:
+var db = new Sequelize('postgres://merj:un1C0rn4raP@awsmerj.c9nq5dhlwr3h.us-west-2.rds.amazonaws.com:5432/merjSocially');
 
-var db = new Sequelize('postgres://teammerj:teammerjgirls@teammerj.ccfvuax37sga.us-west-2.rds.amazonaws.com:5432/merjDB');
-
+// var db = new Sequelize('postgres://teammerj:teammerjgirls@teammerj.ccfvuax37sga.us-west-2.rds.amazonaws.com:5432/merjDB');
 
 //will change to env variables, but may need to direct require('dotenv').config() to correct location of .env file? not sure
 //http://stackoverflow.com/questions/35356692/best-practice-when-using-an-api-key-in-node-js
